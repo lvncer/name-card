@@ -8,15 +8,19 @@ const child_process_1 = require("child_process");
 const chokidar_1 = require("chokidar");
 const open_1 = __importDefault(require("open"));
 const path_1 = require("path");
+const os_1 = require("os");
 async function startServer(markdownFile, options) {
     const webDir = (0, path_1.resolve)(__dirname, "../web");
     const absoluteMarkdownPath = (0, path_1.resolve)(markdownFile);
     console.log(`Starting server for: ${markdownFile}`);
     console.log(`Web directory: ${webDir}`);
     // Next.js サーバー起動
-    const nextProcess = (0, child_process_1.spawn)("npm", ["run", "dev"], {
+    // Windows環境でのnpmコマンド解決
+    const npmCommand = (0, os_1.platform)() === "win32" ? "npm.cmd" : "npm";
+    const nextProcess = (0, child_process_1.spawn)(npmCommand, ["run", "dev"], {
         cwd: webDir,
         stdio: "inherit",
+        shell: true, // Windows環境でのコマンド実行を確実にする
         env: {
             ...process.env,
             MARKDOWN_FILE: absoluteMarkdownPath,
@@ -44,7 +48,18 @@ async function startServer(markdownFile, options) {
     // Next.js プロセスエラーハンドリング
     nextProcess.on("error", (error) => {
         console.error("Failed to start Next.js server:", error);
+        console.error("Please ensure npm is installed and available in PATH");
+        console.error(`Attempted to run: ${npmCommand} run dev`);
+        console.error(`Working directory: ${webDir}`);
+        watcher.close();
         process.exit(1);
+    });
+    nextProcess.on("exit", (code, signal) => {
+        if (code !== 0) {
+            console.error(`Next.js server exited with code ${code} and signal ${signal}`);
+            watcher.close();
+            process.exit(1);
+        }
     });
 }
 //# sourceMappingURL=server.js.map
