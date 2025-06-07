@@ -16,12 +16,12 @@ export async function POST() {
       height: 208, // 55mm in pixels (96 DPI)
     });
 
-    // 現在のページにアクセス
+    // PDF専用ページにアクセス
     const baseUrl = process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : `http://localhost:${process.env.PORT || 3000}`;
 
-    await page.goto(baseUrl, {
+    await page.goto(`${baseUrl}/export`, {
       waitUntil: "networkidle0",
       timeout: 30000,
     });

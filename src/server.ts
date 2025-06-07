@@ -65,8 +65,23 @@ export async function startServer(
 
   // ファイル監視
   const watcher = watch(absoluteMarkdownPath);
-  watcher.on("change", () => {
+  watcher.on("change", async () => {
     console.log("Markdown file changed, reloading...");
+
+    // ブラウザに変更通知を送信
+    try {
+      const response = await fetch(
+        `http://localhost:${options.port}/api/reload`,
+        {
+          method: "POST",
+        }
+      );
+      if (response.ok) {
+        console.log("Reload notification sent to browser");
+      }
+    } catch (error) {
+      console.error("Failed to send reload notification:", error);
+    }
   });
 
   // ブラウザ自動起動

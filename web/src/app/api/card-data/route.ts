@@ -13,7 +13,15 @@ export async function GET() {
     }
 
     const cardData = parseMarkdown(markdownFile);
-    return NextResponse.json(cardData);
+
+    // キャッシュ無効化ヘッダーを追加
+    return NextResponse.json(cardData, {
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+    });
   } catch (error) {
     console.error("Error parsing markdown:", error);
     return NextResponse.json(
