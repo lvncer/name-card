@@ -1,6 +1,6 @@
 {
   "name": "@lvncer/name-card",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Markdown-based business card generator with CLI and Next.js web app",
   "main": "dist/index.js",
   "bin": {
@@ -27,7 +27,8 @@
     "web:test": "cd web && npm run test",
     "web:test:run": "cd web && npm run test:run",
     "test:all": "npm run test:run && cd web && npm run test:run",
-    "test:integration": "npm run build && timeout 10s node bin/name-card.js templates/basic.md --no-open || echo 'Integration test completed'"
+    "test:integration": "npm run build && timeout 10s node bin/name-card.js templates/basic.md --no-open || echo 'Integration test completed'",
+    "postinstall": "cd web && npm install"
   },
   "keywords": [
     "business-card",

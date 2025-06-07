@@ -3,6 +3,7 @@ import { watch } from "chokidar";
 import open from "open";
 import { resolve } from "path";
 import { platform } from "os";
+import { existsSync } from "fs";
 
 interface ServerOptions {
   port: number;
@@ -18,6 +19,34 @@ export async function startServer(
 
   console.log(`Starting server for: ${markdownFile}`);
   console.log(`Web directory: ${webDir}`);
+
+  // webディレクトリの依存関係確認
+  const nodeModulesPath = resolve(webDir, "node_modules");
+  if (!existsSync(nodeModulesPath)) {
+    console.log("Installing web dependencies...");
+    const npmCommand = platform() === "win32" ? "npm.cmd" : "npm";
+
+    const installProcess = spawn(npmCommand, ["install"], {
+      cwd: webDir,
+      stdio: "inherit",
+      shell: true,
+    });
+
+    await new Promise<void>((resolve, reject) => {
+      installProcess.on("close", (code) => {
+        if (code === 0) {
+          console.log("Dependencies installed successfully");
+          resolve();
+        } else {
+          reject(new Error(`npm install failed with code ${code}`));
+        }
+      });
+
+      installProcess.on("error", (error) => {
+        reject(error);
+      });
+    });
+  }
 
   // Next.js サーバー起動
   // Windows環境でのnpmコマンド解決
