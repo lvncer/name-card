@@ -45,7 +45,7 @@ name-card --help
 
 ### Web アプリケーション
 
-オンラインで直接利用: [https://name-card.vercel.app](https://name-card.vercel.app)
+オンラインで直接利用: [https://name-card-black.vercel.app](https://name-card-black.vercel.app)
 
 ## 📝 Markdown ファイル形式
 
