@@ -1,4 +1,5 @@
 import matter from "gray-matter";
+import { marked } from "marked";
 import { readFileSync } from "fs";
 
 export interface BusinessCardData {
@@ -7,13 +8,23 @@ export interface BusinessCardData {
   description: string;
   contacts: string[];
   rawContent: string;
+  htmlContent: string;
 }
 
 export function parseMarkdown(filePath: string): BusinessCardData {
   const fileContent = readFileSync(filePath, "utf-8");
   const { content } = matter(fileContent);
 
-  // 名刺データを抽出
+  // markedの設定でHTMLを有効化
+  marked.setOptions({
+    breaks: true,
+    gfm: true,
+  });
+
+  // HTMLコンテンツを生成
+  const htmlContent = marked(content) as string;
+
+  // 名刺データを抽出（従来の方法も維持）
   const lines = content.split("\n").filter((line) => line.trim());
 
   const name =
@@ -41,5 +52,6 @@ export function parseMarkdown(filePath: string): BusinessCardData {
     description,
     contacts,
     rawContent: content,
+    htmlContent,
   };
 }
