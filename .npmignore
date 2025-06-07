@@ -1,0 +1,36 @@
+# Development files
+src/
+tests/
+docs/
+*.log
+.env*
+
+# Build artifacts
+.next/
+node_modules/
+coverage/
+
+# Development tools
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Testing
+playwright-report/
+test-results/
+
+# TypeScript
+tsconfig.json
+vitest.config.ts
+
+# Development dependencies
+nodemon.json

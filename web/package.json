@@ -8,8 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
+    "test:run": "vitest run",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest --watch"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
