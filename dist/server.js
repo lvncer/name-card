@@ -9,11 +9,37 @@ const chokidar_1 = require("chokidar");
 const open_1 = __importDefault(require("open"));
 const path_1 = require("path");
 const os_1 = require("os");
+const fs_1 = require("fs");
 async function startServer(markdownFile, options) {
     const webDir = (0, path_1.resolve)(__dirname, "../web");
     const absoluteMarkdownPath = (0, path_1.resolve)(markdownFile);
     console.log(`Starting server for: ${markdownFile}`);
     console.log(`Web directory: ${webDir}`);
+    // webディレクトリの依存関係確認
+    const nodeModulesPath = (0, path_1.resolve)(webDir, "node_modules");
+    if (!(0, fs_1.existsSync)(nodeModulesPath)) {
+        console.log("Installing web dependencies...");
+        const npmCommand = (0, os_1.platform)() === "win32" ? "npm.cmd" : "npm";
+        const installProcess = (0, child_process_1.spawn)(npmCommand, ["install"], {
+            cwd: webDir,
+            stdio: "inherit",
+            shell: true,
+        });
+        await new Promise((resolve, reject) => {
+            installProcess.on("close", (code) => {
+                if (code === 0) {
+                    console.log("Dependencies installed successfully");
+                    resolve();
+                }
+                else {
+                    reject(new Error(`npm install failed with code ${code}`));
+                }
+            });
+            installProcess.on("error", (error) => {
+                reject(error);
+            });
+        });
+    }
     // Next.js サーバー起動
     // Windows環境でのnpmコマンド解決
     const npmCommand = (0, os_1.platform)() === "win32" ? "npm.cmd" : "npm";

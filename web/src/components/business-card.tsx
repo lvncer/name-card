@@ -13,6 +13,19 @@ export function BusinessCard({ data, scale = 2 }: BusinessCardProps) {
     transformOrigin: "center center",
   };
 
+  // HTMLコンテンツがある場合はそれを使用、ない場合は従来の方法
+  if (data.htmlContent && data.htmlContent.trim()) {
+    return (
+      <div
+        className="bg-white border border-gray-200 rounded-lg shadow-lg p-6"
+        style={cardStyle}
+        id="business-card"
+        dangerouslySetInnerHTML={{ __html: data.htmlContent }}
+      />
+    );
+  }
+
+  // 従来の方法（フォールバック）
   return (
     <div
       className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 flex flex-col justify-between"
