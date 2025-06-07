@@ -45,7 +45,7 @@ name-card --help
 
 ### Web アプリケーション
 
-オンラインで直接利用: [https://name-card-black.vercel.app](https://name-card-black.vercel.app)
+CLI 実行時に自動的にローカル Web サーバーが起動し、ブラウザでプレビューできます。
 
 ## 📝 Markdown ファイル形式
 
@@ -135,17 +135,6 @@ name-card/
 - **freelancer**: フリーランス向け
 
 ## 🚀 デプロイ
-
-### Vercel（Web）
-
-```bash
-# Vercel CLI インストール
-npm install -g vercel
-
-# デプロイ
-cd web
-vercel
-```
 
 ### npm 公開（CLI）
 

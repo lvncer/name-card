@@ -1,12 +1,11 @@
 {
   "name": "@lvncer/name-card",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Markdown-based business card generator with CLI and Next.js web app",
   "main": "dist/index.js",
   "bin": {
     "name-card": "./bin/name-card.js"
   },
-  "homepage": "https://name-card.vercel.app",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lvncer/name-card.git"
