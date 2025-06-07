@@ -168,7 +168,7 @@ npm publish --access public
 
 ### npm パッケージ
 
-- **npm**: https://www.npmjs.com/package/name-card
+- **npm**: https://www.npmjs.com/package/@lvncer/name-card
 - **GitHub**: https://github.com/lvncer/name-card
 
 ## 📝 使用方法
@@ -177,7 +177,7 @@ npm publish --access public
 
 ```bash
 # グローバルインストール
-npm install -g name-card
+npm install -g @lvncer/name-card
 
 # 基本使用
 name-card business-card.md
@@ -224,8 +224,8 @@ npm run build
 npm list -g name-card
 
 # 再インストール
-npm uninstall -g name-card
-npm install -g name-card
+npm uninstall -g @lvncer/name-card
+npm install -g @lvncer/name-card
 ```
 
 ## 📞 サポート
@@ -250,7 +250,7 @@ npm install -g name-card
    https://name-card.vercel.app
 
 3. **npm パッケージ確認**:
-   https://www.npmjs.com/package/name-card
+   https://www.npmjs.com/package/@lvncer/name-card
 
 4. **GitHub リポジトリ確認**:
    https://github.com/lvncer/name-card

@@ -15,14 +15,14 @@ Markdown ファイルから美しい名刺を作成・エクスポートでき�
 ### グローバルインストール（推奨）
 
 ```bash
-npm install -g name-card
+npm install -g @lvncer/name-card
 ```
 
 ### ローカルインストール
 
 ```bash
-npm install name-card
-npx name-card
+npm install @lvncer/name-card
+npx @lvncer/name-card
 ```
 
 ## 🎯 使用方法

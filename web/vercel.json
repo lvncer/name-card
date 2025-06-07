@@ -5,11 +5,11 @@
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "functions": {
-    "web/src/app/api/export/route.ts": {
+    "src/app/api/export/route.ts": {
       "maxDuration": 30
     }
   },
   "env": {
-    "NEXT_PUBLIC_APP_URL": "@next_public_app_url"
+    "NEXT_PUBLIC_APP_URL": "https://name-card.vercel.app"
   }
 }
