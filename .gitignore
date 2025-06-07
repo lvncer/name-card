@@ -40,5 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# build output
+/dist
+
 .cursor/mcp.json
 .cursor/prompts
