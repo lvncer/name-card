@@ -14,7 +14,7 @@
 /coverage
 
 # next.js
-/.next/
+# /.next/  # コメントアウト: npmパッケージで使用するため
 /out/
 
 # production

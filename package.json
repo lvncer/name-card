@@ -15,6 +15,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "prebuild": "cd web && npm install && npm run build",
     "dev": "nodemon --exec ts-node src/index.ts",
     "start": "node dist/index.js",
     "test": "vitest",
@@ -27,7 +28,7 @@
     "web:test:run": "cd web && npm run test:run",
     "test:all": "npm run test:run && cd web && npm run test:run",
     "test:integration": "npm run build && timeout 10s node bin/name-card.js templates/basic.md --no-open || echo 'Integration test completed'",
-    "postinstall": "cd web && npm install"
+    "postinstall": "cd web && npm install --production"
   },
   "keywords": [
     "business-card",

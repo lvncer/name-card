@@ -51,32 +51,11 @@ export async function startServer(
   // Windows環境でのnpmコマンド解決
   const npmCommand = platform() === "win32" ? "npm.cmd" : "npm";
 
-  // Next.js ビルド＆起動関数
-  const buildAndStart = async (): Promise<any> => {
-    console.log("Building Next.js application...");
+  // プリビルド済みNext.js サーバー起動関数
+  const startPrebuiltServer = async (): Promise<any> => {
+    console.log("Starting prebuilt Next.js server...");
     
-    // ビルド実行
-    const buildProcess = spawn(npmCommand, ["run", "build"], {
-      cwd: webDir,
-      stdio: "inherit",
-      shell: true,
-    });
-
-    await new Promise<void>((resolve, reject) => {
-      buildProcess.on("close", (code) => {
-        if (code === 0) {
-          console.log("Build completed successfully");
-          resolve();
-        } else {
-          reject(new Error(`Build failed with code ${code}`));
-        }
-      });
-      buildProcess.on("error", reject);
-    });
-
-    console.log("Starting production server...");
-    
-    // 本番サーバー起動
+    // プリビルド済みサーバー起動
     const nextProcess = spawn(npmCommand, ["run", "start"], {
       cwd: webDir,
       stdio: "inherit",
@@ -107,24 +86,27 @@ export async function startServer(
     return nextProcess;
   };
 
-  // 初回ビルド＆起動
-  let nextProcess = await buildAndStart();
+  // 初回サーバー起動
+  let nextProcess = await startPrebuiltServer();
 
-  // ファイル監視
+  // ファイル監視（リロード通知のみ）
   const watcher = watch(absoluteMarkdownPath);
   watcher.on("change", async () => {
-    console.log("Markdown file changed, rebuilding...");
+    console.log("Markdown file changed, sending reload notification...");
 
     try {
-      // 現在のサーバーを停止
-      nextProcess.kill();
+      // リロード通知を送信（サーバーは再起動不要）
+      const response = await fetch(`http://localhost:${options.port}/api/reload`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'reload' })
+      });
       
-      // 再ビルド＆再起動
-      nextProcess = await buildAndStart();
-      
-      console.log("Server restarted successfully");
+      if (response.ok) {
+        console.log("Reload notification sent successfully");
+      }
     } catch (error) {
-      console.error("Failed to restart server:", error);
+      console.log("Note: Reload notification failed, but server continues running");
     }
   });
 
