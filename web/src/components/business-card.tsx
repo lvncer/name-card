@@ -1,3 +1,4 @@
+import React, { memo, useMemo } from "react";
 import { BusinessCardData } from "../lib/markdown-parser";
 
 interface BusinessCardProps {
@@ -5,16 +6,19 @@ interface BusinessCardProps {
   scale?: number;
 }
 
-export function BusinessCard({ data, scale = 2 }: BusinessCardProps) {
-  const cardStyle = {
+export const BusinessCard = memo<BusinessCardProps>(({ data, scale = 2 }) => {
+  // メモ化されたスタイル計算
+  const cardStyle = useMemo(() => ({
     width: `${91 * scale}mm`,
     height: `${55 * scale}mm`,
     transform: scale !== 1 ? `scale(${scale})` : undefined,
     transformOrigin: "center center",
-  };
+  }), [scale]);
 
-  // HTMLコンテンツがある場合はそれを使用、ない場合は従来の方法
-  if (data.htmlContent && data.htmlContent.trim()) {
+  // HTMLコンテンツレンダリング（メモ化）
+  const htmlCard = useMemo(() => {
+    if (!data.htmlContent?.trim()) return null;
+    
     return (
       <div
         className="bg-white border border-gray-200 rounded-lg shadow-lg p-6"
@@ -23,7 +27,9 @@ export function BusinessCard({ data, scale = 2 }: BusinessCardProps) {
         dangerouslySetInnerHTML={{ __html: data.htmlContent }}
       />
     );
-  }
+  }, [data.htmlContent, cardStyle]);
+
+  if (htmlCard) return htmlCard;
 
   // 従来の方法（フォールバック）
   return (
@@ -53,7 +59,7 @@ export function BusinessCard({ data, scale = 2 }: BusinessCardProps) {
       {data.contacts.length > 0 && (
         <div className="space-y-1">
           {data.contacts.map((contact, index) => (
-            <p key={index} className="text-xs text-gray-600">
+            <p key={`contact-${index}`} className="text-xs text-gray-600">
               {contact}
             </p>
           ))}
@@ -61,4 +67,7 @@ export function BusinessCard({ data, scale = 2 }: BusinessCardProps) {
       )}
     </div>
   );
-} 
+});
+
+// displayNameを設定（デバッグ用）
+BusinessCard.displayName = "BusinessCard"; 

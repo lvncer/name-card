@@ -1,4 +1,4 @@
-// File: /Users/lvncer/GitRepos/name-card/web/src/app/api/reload/route.js
+// File: /Users/lvncer/GitRepos/name-card/web/src/app/api/reload/route.ts
 import * as entry from '../../../../../src/app/api/reload/route.js'
 import type { NextRequest } from 'next/server.js'
 

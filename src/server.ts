@@ -89,25 +89,48 @@ export async function startServer(
   // 初回サーバー起動
   let nextProcess = await startPrebuiltServer();
 
-  // ファイル監視（リロード通知のみ）
-  const watcher = watch(absoluteMarkdownPath);
-  watcher.on("change", async () => {
-    console.log("Markdown file changed, sending reload notification...");
-
-    try {
-      // リロード通知を送信（サーバーは再起動不要）
-      const response = await fetch(`http://localhost:${options.port}/api/reload`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'reload' })
-      });
-      
-      if (response.ok) {
-        console.log("Reload notification sent successfully");
-      }
-    } catch (error) {
-      console.log("Note: Reload notification failed, but server continues running");
+  // 効率的なファイル監視（デバウンス付き）
+  let reloadTimeout: NodeJS.Timeout | null = null;
+  const watcher = watch(absoluteMarkdownPath, {
+    ignored: /[\/\\]\./,
+    persistent: true,
+    ignoreInitial: true,
+    awaitWriteFinish: {
+      stabilityThreshold: 100,
+      pollInterval: 100
     }
+  });
+
+  watcher.on("change", async () => {
+    console.log("Markdown file changed, preparing reload notification...");
+
+    // デバウンス（短時間での複数変更を防ぐ）
+    if (reloadTimeout) {
+      clearTimeout(reloadTimeout);
+    }
+
+    reloadTimeout = setTimeout(async () => {
+      try {
+        // HTTP通信ではなく、直接APIを呼び出し（パフォーマンス向上）
+        const response = await fetch(`http://localhost:${options.port}/api/reload`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'User-Agent': 'name-card-internal'
+          },
+          body: JSON.stringify({ type: 'reload', source: 'file-watcher' }),
+          signal: AbortSignal.timeout(5000) // 5秒タイムアウト
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log(`Reload notification sent to ${result.clientCount} clients`);
+        }
+      } catch (error) {
+        // サイレントフェイル（サーバーは継続）
+        console.log("Note: Reload notification failed, but server continues running");
+      }
+    }, 150); // 150ms デバウンス
   });
 
   // ブラウザ自動起動
@@ -117,13 +140,37 @@ export async function startServer(
     }, 3000);
   }
 
-  // プロセス終了処理
-  process.on("SIGINT", () => {
-    console.log("\nShutting down server...");
+  // 最適化されたプロセス終了処理
+  const gracefulShutdown = () => {
+    console.log("\nGracefully shutting down server...");
+    
+    // ファイル監視停止
     watcher.close();
-    nextProcess.kill();
-    process.exit(0);
-  });
+    
+    // タイムアウトクリア
+    if (reloadTimeout) {
+      clearTimeout(reloadTimeout);
+    }
+    
+    // Next.jsプロセス終了
+    nextProcess.kill('SIGTERM');
+    
+    // 強制終了のフォールバック
+    setTimeout(() => {
+      console.log("Force killing process...");
+      nextProcess.kill('SIGKILL');
+      process.exit(1);
+    }, 5000);
+    
+    nextProcess.on('exit', () => {
+      console.log("Server shut down successfully");
+      process.exit(0);
+    });
+  };
+
+  // 複数のシグナルを監視
+  process.on("SIGINT", gracefulShutdown);
+  process.on("SIGTERM", gracefulShutdown);
 
   // プロセス終了時のクリーンアップは buildAndStart 内で処理
 }

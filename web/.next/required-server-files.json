@@ -2,7 +2,6 @@
   "version": 1,
   "config": {
     "env": {},
-    "webpack": null,
     "eslint": {
       "ignoreDuringBuilds": false
     },
@@ -53,7 +52,8 @@
       "disableStaticImages": false,
       "minimumCacheTTL": 60,
       "formats": [
-        "image/webp"
+        "image/webp",
+        "image/avif"
       ],
       "dangerouslyAllowSVG": false,
       "contentSecurityPolicy": "script-src 'none'; frame-src 'none'; sandbox;",
@@ -65,8 +65,8 @@
       "position": "bottom-left"
     },
     "onDemandEntries": {
-      "maxInactiveAge": 60000,
-      "pagesBufferLength": 5
+      "maxInactiveAge": 25000,
+      "pagesBufferLength": 2
     },
     "amp": {
       "canonicalBase": ""
@@ -197,6 +197,10 @@
       "useCache": false,
       "optimizePackageImports": [
         "lucide-react",
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge",
         "date-fns",
         "lodash-es",
         "ramda",
@@ -278,6 +282,9 @@
     "htmlLimitedBots": "Mediapartners-Google|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti",
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
+    "compiler": {
+      "removeConsole": true
+    },
     "turbopack": {
       "root": "/Users/lvncer/GitRepos/name-card/web"
     }
