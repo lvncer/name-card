@@ -1,6 +1,6 @@
 {
   "name": "@lvncer/name-card",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Markdown-based business card generator with CLI and Next.js web app",
   "main": "dist/index.js",
   "bin": {
