@@ -4,11 +4,12 @@ import { BusinessCard } from "../components/business-card";
 import { Button } from "../components/ui/button";
 import { Download } from "lucide-react";
 import { useEffect, useState } from "react";
+import { BusinessCardData } from "../lib/markdown-parser";
 
 export default function Home() {
-  const [cardData, setCardData] = useState(null);
+  const [cardData, setCardData] = useState<BusinessCardData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   // カードデータを読み込む関数
   const loadCardData = () => {

@@ -2,7 +2,17 @@ import { readFileSync } from "fs";
 import { marked } from "marked";
 import matter from "gray-matter";
 
-export async function parseMarkdown(filePath) {
+export interface BusinessCardData {
+  name: string;
+  title: string;
+  description: string;
+  contacts: string[];
+  htmlContent: string | null;
+  originalContent: string;
+  frontmatter: any;
+}
+
+export async function parseMarkdown(filePath: string): Promise<BusinessCardData> {
   try {
     const fileContent = readFileSync(filePath, "utf-8");
     const { data: frontmatter, content } = matter(fileContent);
@@ -62,12 +72,12 @@ export async function parseMarkdown(filePath) {
     };
   } catch (error) {
     console.error("Failed to parse markdown:", error);
-    throw new Error(`Failed to parse markdown file: ${error.message}`);
+    throw new Error(`Failed to parse markdown file: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
 // HTMLからタイトルを抽出するヘルパー関数
-function extractTitleFromHtml(htmlContent) {
+function extractTitleFromHtml(htmlContent: string): string {
   const h1Match = htmlContent.match(/<h1[^>]*>(.*?)<\/h1>/i);
   if (h1Match) {
     // HTMLタグを除去してテキストのみ抽出
