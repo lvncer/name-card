@@ -46,3 +46,4 @@ dist/
 
 .cursor/mcp.json
 .cursor/prompts
+bun.lockb

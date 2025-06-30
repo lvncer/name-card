@@ -1,34 +1,28 @@
-# HTML & Tailwind CSS サンプル名刺
-
-<div class="bg-gradient-to-br from-blue-50 to-indigo-100 shadow-xl rounded-2xl p-6 text-gray-800 h-full flex flex-col justify-between">
+<div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg p-3 text-gray-800 h-full flex flex-col justify-between">
   <div class="text-center">
-    <h1 class="text-3xl font-bold text-indigo-900 mb-2">田中 太郎</h1>
-    <p class="text-lg text-indigo-700 font-semibold">フルスタックエンジニア</p>
+    <h1 class="text-xl font-bold text-indigo-900 mb-1">田中 太郎</h1>
+    <p class="text-sm text-indigo-700 font-semibold">フルスタックエンジニア</p>
   </div>
-  
-  <div class="flex-1 flex items-center">
-    <p class="text-sm text-gray-700 text-center w-full leading-relaxed">
-      React、Next.js、TypeScript を使用したモダンな Web アプリケーション開発を専門としています。
-      <span class="text-indigo-600 font-medium">ユーザー体験</span>を重視した設計が得意です。
+
+  <div class="flex-1 flex items-center py-2">
+    <p class="text-xs text-gray-700 text-center w-full leading-tight">
+      React・Next.js・TypeScript専門。
+      <span class="text-indigo-600 font-medium">UX重視</span>の開発が得意。
     </p>
   </div>
-  
-  <div class="space-y-2">
+
+  <div class="space-y-1">
     <div class="flex items-center text-xs text-gray-600">
-      <span class="w-4 h-4 mr-2">📧</span>
-      <span>tanaka@example.com</span>
+      <span class="w-3 h-3 mr-1">📧</span>
+      <span class="text-xs">tanaka@example.com</span>
     </div>
     <div class="flex items-center text-xs text-gray-600">
-      <span class="w-4 h-4 mr-2">📱</span>
-      <span>090-1234-5678</span>
+      <span class="w-3 h-3 mr-1">📱</span>
+      <span class="text-xs">090-1234-5678</span>
     </div>
     <div class="flex items-center text-xs text-gray-600">
-      <span class="w-4 h-4 mr-2">🌐</span>
-      <span class="text-indigo-600">https://tanaka.dev</span>
-    </div>
-    <div class="flex items-center text-xs text-gray-600">
-      <span class="w-4 h-4 mr-2">🐙</span>
-      <span class="text-indigo-600">@tanaka-dev</span>
+      <span class="w-3 h-3 mr-1">🌐</span>
+      <span class="text-xs text-indigo-600">tanaka.dev</span>
     </div>
   </div>
 </div>
