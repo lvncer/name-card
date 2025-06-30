@@ -16,7 +16,7 @@ Markdown ファイルから美しい名刺を作成・印刷できる CLI ツー
 ### グローバルインストール（推奨）
 
 ```bash
-npm install -g @lvncer/name-card
+npm install -g @lvncer/name-card$$
 ```
 
 ### ローカル使用
