@@ -57,15 +57,15 @@ export async function startServer(
     
     // プリビルド済みサーバー起動
     const nextProcess = spawn(npmCommand, ["run", "start"], {
-      cwd: webDir,
-      stdio: "inherit",
+    cwd: webDir,
+    stdio: "inherit",
       shell: true,
-      env: {
-        ...process.env,
-        MARKDOWN_FILE: absoluteMarkdownPath,
-        PORT: options.port.toString(),
-      },
-    });
+    env: {
+      ...process.env,
+      MARKDOWN_FILE: absoluteMarkdownPath,
+      PORT: options.port.toString(),
+    },
+  });
 
     // エラーハンドリング設定
     nextProcess.on("error", (error) => {
@@ -125,11 +125,11 @@ export async function startServer(
         if (response.ok) {
           const result = await response.json();
           console.log(`Reload notification sent to ${result.clientCount} clients`);
-        }
-      } catch (error) {
+      }
+    } catch (error) {
         // サイレントフェイル（サーバーは継続）
         console.log("Note: Reload notification failed, but server continues running");
-      }
+    }
     }, 150); // 150ms デバウンス
   });
 
@@ -151,7 +151,7 @@ export async function startServer(
     if (reloadTimeout) {
       clearTimeout(reloadTimeout);
     }
-    
+
     // Next.jsプロセス終了
     nextProcess.kill('SIGTERM');
     

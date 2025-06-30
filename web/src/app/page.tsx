@@ -35,19 +35,19 @@ export default function Home() {
       
       const data = await response.json();
       
-      if (data.error) {
-        setError(data.error);
+        if (data.error) {
+          setError(data.error);
         setCardData(null);
-      } else {
-        setCardData(data);
-        setError(null);
-      }
+        } else {
+          setCardData(data);
+          setError(null);
+        }
     } catch (error) {
       console.error("Failed to load card data:", error);
       setError(error instanceof Error ? error.message : "Failed to load card data");
       setCardData(null);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
   }, []);
 
@@ -60,10 +60,10 @@ export default function Home() {
 
     eventSource.onmessage = (event) => {
       try {
-        const data = JSON.parse(event.data);
-        if (data.type === "reload") {
+      const data = JSON.parse(event.data);
+      if (data.type === "reload") {
           console.log("Markdown file changed, reloading data...");
-          loadCardData();
+        loadCardData();
         } else if (data.type === "connected") {
           console.log("SSE connection established");
         }
@@ -102,7 +102,7 @@ export default function Home() {
 
   // メモ化されたコンポーネント
   const LoadingComponent = useMemo(() => (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
         <p className="text-gray-500">Loading...</p>
@@ -111,7 +111,7 @@ export default function Home() {
   ), []);
 
   const ErrorComponent = useMemo(() => (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center max-w-md mx-auto p-6">
         <p className="text-red-500 mb-4">{error}</p>
         <Button onClick={loadCardData} variant="outline">
@@ -122,7 +122,7 @@ export default function Home() {
   ), [error, loadCardData]);
 
   const NoDataComponent = useMemo(() => (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center">
         <p className="text-gray-500 mb-4">No card data available</p>
         <Button onClick={loadCardData} variant="outline">
@@ -174,17 +174,17 @@ export default function Home() {
         }
       `}</style>
       
-      <div className="min-h-screen bg-gray-50 relative">
-        {/* エクスポートボタン */}
-        <div className="absolute top-4 right-4 z-10">
-          <Button onClick={handleExport} className="flex items-center gap-2">
-            <Download size={16} />
+    <div className="min-h-screen bg-gray-50 relative">
+      {/* エクスポートボタン */}
+      <div className="absolute top-4 right-4 z-10">
+        <Button onClick={handleExport} className="flex items-center gap-2">
+          <Download size={16} />
             印刷・PDF出力
-          </Button>
-        </div>
+        </Button>
+      </div>
 
-        {/* 名刺プレビュー */}
-        <div className="flex items-center justify-center min-h-screen p-8">
+      {/* 名刺プレビュー */}
+      <div className="flex items-center justify-center min-h-screen p-8">
           <div className="border-2 border-dashed border-gray-300 p-8 rounded-lg bg-white">
             <p className="text-xs text-gray-500 mb-4 text-center">実際のサイズ (91mm × 55mm)</p>
             {/* 印刷専用の名刺（画面では非表示） */}
@@ -200,4 +200,4 @@ export default function Home() {
       </div>
     </>
   );
-} 
+}

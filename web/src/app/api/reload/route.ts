@@ -8,15 +8,15 @@ let clientCount = 0;
 
 export async function GET(request: NextRequest): Promise<Response> {
   try {
-    // Server-Sent Events (SSE) ストリーム作成
+  // Server-Sent Events (SSE) ストリーム作成
     const stream = new ReadableStream<string>({
-      start(controller) {
-        // クライアントを登録
-        clients.add(controller);
+    start(controller) {
+      // クライアントを登録
+      clients.add(controller);
         clientCount++;
         console.log(`SSE client connected. Total: ${clientCount}`);
 
-        // 接続確認メッセージ
+      // 接続確認メッセージ
         controller.enqueue(`data: ${JSON.stringify({ 
           type: "connected",
           timestamp: Date.now()
@@ -24,11 +24,11 @@ export async function GET(request: NextRequest): Promise<Response> {
 
         // クリーンアップ（接続切断時）
         const cleanup = () => {
-          clients.delete(controller);
+        clients.delete(controller);
           clientCount--;
           console.log(`SSE client disconnected. Total: ${clientCount}`);
           try {
-            controller.close();
+        controller.close();
           } catch (e) {
             // Already closed
           }
@@ -44,19 +44,19 @@ export async function GET(request: NextRequest): Promise<Response> {
         request.signal.addEventListener("abort", () => {
           clearTimeout(timeout);
         }, { once: true });
-      },
-    });
+    },
+  });
 
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/event-stream",
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache, no-store, must-revalidate",
         "Connection": "keep-alive",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Cache-Control",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Cache-Control",
         "X-Accel-Buffering": "no", // Nginxバッファリング無効化
-      },
-    });
+    },
+  });
   } catch (error) {
     console.error("SSE connection error:", error);
     return NextResponse.json(
@@ -92,7 +92,7 @@ function notifyReload(): void {
 // POST エンドポイント（ファイル変更通知用）
 export async function POST(): Promise<NextResponse> {
   try {
-    notifyReload();
+  notifyReload();
     return NextResponse.json({ 
       success: true, 
       clientCount,
