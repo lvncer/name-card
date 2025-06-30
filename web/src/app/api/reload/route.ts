@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
 // グローバルなクライアント管理
-const clients = new Set<ReadableStreamDefaultController>();
+const clients = new Set<ReadableStreamDefaultController<string>>();
 
 export async function GET(request: NextRequest) {
   // Server-Sent Events (SSE) ストリーム作成

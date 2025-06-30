@@ -1,4 +1,4 @@
-import { parseMarkdown } from "@/lib/markdown-parser";
+import { parseMarkdown } from "../../lib/markdown-parser";
 import { NextResponse } from "next/server";
 
 export async function GET() {

@@ -1,8 +1,8 @@
 "use client";
 
-import { BusinessCard } from "@/components/business-card";
-import { Button } from "@/components/ui/button";
-import { BusinessCardData } from "@/lib/markdown-parser";
+import { BusinessCard } from "../components/business-card";
+import { Button } from "../components/ui/button";
+import { BusinessCardData } from "../lib/markdown-parser";
 import { Download } from "lucide-react";
 import { useEffect, useState } from "react";
 

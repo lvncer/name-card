@@ -1,4 +1,4 @@
-import { BusinessCardData } from "@/lib/markdown-parser";
+import { BusinessCardData } from "../lib/markdown-parser";
 
 interface BusinessCardProps {
   data: BusinessCardData;
