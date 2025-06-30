@@ -1,11 +1,6 @@
-import { BusinessCardData } from "../lib/markdown-parser";
+// parseMarkdown は不要 - データは props で受け取る
 
-interface BusinessCardProps {
-  data: BusinessCardData;
-  scale?: number;
-}
-
-export function BusinessCard({ data, scale = 2 }: BusinessCardProps) {
+export function BusinessCard({ data, scale = 2 }) {
   const cardStyle = {
     width: `${91 * scale}mm`,
     height: `${55 * scale}mm`,
@@ -61,4 +56,4 @@ export function BusinessCard({ data, scale = 2 }: BusinessCardProps) {
       )}
     </div>
   );
-}
+} 

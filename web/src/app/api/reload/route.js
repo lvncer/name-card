@@ -1,9 +1,9 @@
 import { NextRequest } from "next/server";
 
 // グローバルなクライアント管理
-const clients = new Set<ReadableStreamDefaultController<string>>();
+const clients = new Set();
 
-export async function GET(request: NextRequest) {
+export async function GET(request) {
   // Server-Sent Events (SSE) ストリーム作成
   const stream = new ReadableStream({
     start(controller) {
@@ -50,4 +50,4 @@ function notifyReload() {
 export async function POST() {
   notifyReload();
   return Response.json({ success: true });
-}
+} 
