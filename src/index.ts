@@ -1,13 +1,19 @@
 import { Command } from "commander";
 import { startServer } from "./server";
 import { validateMarkdownFile } from "./utils/file-validator";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 const program = new Command();
+
+// package.jsonからバージョンを取得
+const packageJsonPath = join(__dirname, "../package.json");
+const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
 
 program
   .name("name-card")
   .description("Markdown-based business card generator")
-  .version("1.0.0");
+  .version(packageJson.version);
 
 program
   .argument("<file>", "Markdown file path")
