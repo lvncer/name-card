@@ -1,4 +1,4 @@
-<div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg p-3 text-gray-800 h-full flex flex-col justify-between">
+<div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-lg shadow-lg p-3 text-gray-800 h-full flex flex-col justify-between">
   <div class="text-center">
     <h1 class="text-xl font-bold text-indigo-900 mb-1">田中 太郎</h1>
     <p class="text-sm text-indigo-700 font-semibold">フルスタックエンジニア</p>

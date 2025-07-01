@@ -15,39 +15,41 @@ export default function Home() {
   const loadCardData = useCallback(async () => {
     try {
       setLoading(true);
-      
+
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒タイムアウト
-      
+
       const response = await fetch("/api/card-data", {
         signal: controller.signal,
         headers: {
-          'Accept': 'application/json',
-          'Cache-Control': 'no-cache'
-        }
+          Accept: "application/json",
+          "Cache-Control": "no-cache",
+        },
       });
-      
+
       clearTimeout(timeoutId);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
-      
-        if (data.error) {
-          setError(data.error);
+
+      if (data.error) {
+        setError(data.error);
         setCardData(null);
-        } else {
-          setCardData(data);
-          setError(null);
-        }
+      } else {
+        setCardData(data);
+        setError(null);
+      }
     } catch (error) {
       console.error("Failed to load card data:", error);
-      setError(error instanceof Error ? error.message : "Failed to load card data");
+      setError(
+        error instanceof Error ? error.message : "Failed to load card data"
+      );
       setCardData(null);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   }, []);
 
@@ -60,10 +62,10 @@ export default function Home() {
 
     eventSource.onmessage = (event) => {
       try {
-      const data = JSON.parse(event.data);
-      if (data.type === "reload") {
+        const data = JSON.parse(event.data);
+        if (data.type === "reload") {
           console.log("Markdown file changed, reloading data...");
-        loadCardData();
+          loadCardData();
         } else if (data.type === "connected") {
           console.log("SSE connection established");
         }
@@ -89,48 +91,57 @@ export default function Home() {
   // 最適化された印刷処理（メモ化）
   const handleExport = useCallback(() => {
     // 印刷前の最適化
-    document.body.style.overflow = 'hidden';
-    
+    document.body.style.overflow = "hidden";
+
     // 印刷ダイアログを開く
     window.print();
-    
+
     // 印刷後の復元
     setTimeout(() => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }, 100);
   }, []);
 
   // メモ化されたコンポーネント
-  const LoadingComponent = useMemo(() => (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-        <p className="text-gray-500">Loading...</p>
+  const LoadingComponent = useMemo(
+    () => (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+          <p className="text-gray-500">Loading...</p>
+        </div>
       </div>
-    </div>
-  ), []);
+    ),
+    []
+  );
 
-  const ErrorComponent = useMemo(() => (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center max-w-md mx-auto p-6">
-        <p className="text-red-500 mb-4">{error}</p>
-        <Button onClick={loadCardData} variant="outline">
-          Retry
-        </Button>
+  const ErrorComponent = useMemo(
+    () => (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <p className="text-red-500 mb-4">{error}</p>
+          <Button onClick={loadCardData} variant="outline">
+            Retry
+          </Button>
+        </div>
       </div>
-    </div>
-  ), [error, loadCardData]);
+    ),
+    [error, loadCardData]
+  );
 
-  const NoDataComponent = useMemo(() => (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <p className="text-gray-500 mb-4">No card data available</p>
-        <Button onClick={loadCardData} variant="outline">
-          Reload
-        </Button>
+  const NoDataComponent = useMemo(
+    () => (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-500 mb-4">No card data available</p>
+          <Button onClick={loadCardData} variant="outline">
+            Reload
+          </Button>
+        </div>
       </div>
-    </div>
-  ), [loadCardData]);
+    ),
+    [loadCardData]
+  );
 
   if (loading) return LoadingComponent;
   if (error) return ErrorComponent;
@@ -144,11 +155,12 @@ export default function Home() {
           * {
             visibility: hidden;
           }
-          
-          .print-only, .print-only * {
+
+          .print-only,
+          .print-only * {
             visibility: visible;
           }
-          
+
           .print-only {
             position: absolute;
             left: 0;
@@ -159,34 +171,41 @@ export default function Home() {
             padding: 0;
             page-break-after: avoid;
             page-break-inside: avoid;
+            display: block !important;
           }
-          
+
           body {
             margin: 0;
             padding: 0;
             background: white !important;
           }
-          
+
+          /* flexレイアウトを印刷時に無効化 */
+          .flex,
+          .flex-col,
+          .flex-row {
+            display: block !important;
+          }
+
           @page {
             size: 91mm 55mm;
             margin: 0;
           }
         }
       `}</style>
-      
-    <div className="min-h-screen bg-gray-50 relative">
-      {/* エクスポートボタン */}
-      <div className="absolute top-4 right-4 z-10">
-        <Button onClick={handleExport} className="flex items-center gap-2">
-          <Download size={16} />
-            印刷・PDF出力
-        </Button>
-      </div>
 
-      {/* 名刺プレビュー */}
-      <div className="flex items-center justify-center min-h-screen p-8">
-          <div className="border-2 border-dashed border-gray-300 p-8 rounded-lg bg-white">
-            <p className="text-xs text-gray-500 mb-4 text-center">実際のサイズ (91mm × 55mm)</p>
+      <div className="min-h-screen relative">
+        {/* エクスポートボタン */}
+        <div className="absolute top-4 right-4 z-10">
+          <Button onClick={handleExport} className="flex items-center gap-2">
+            <Download size={16} />
+            印刷・PDF出力
+          </Button>
+        </div>
+
+        {/* 名刺プレビュー */}
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="border-2 border-dashed border-gray-300 rounded-lg">
             {/* 印刷専用の名刺（画面では非表示） */}
             <div className="print-only hidden print:block">
               <BusinessCard data={cardData} scale={1} />
