@@ -62,7 +62,14 @@
   "files": [
     "dist",
     "bin",
-    "web",
+    "web/src",
+    "web/public",
+    "web/package.json",
+    "web/package-lock.json",
+    "web/next.config.ts",
+    "web/postcss.config.mjs",
+    "web/components.json",
+    "web/tsconfig.json",
     "templates",
     "README.md",
     "LICENSE"
