@@ -1,7 +1,0 @@
-{
-  "/api/card-data/route": "app/api/card-data/route.js",
-  "/api/reload/route": "app/api/reload/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js"
-}
