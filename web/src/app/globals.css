@@ -123,23 +123,60 @@
 /* 印刷時の背景色・グラデーション設定 */
 @media print {
   /* 印刷時に背景色とグラデーションを強制表示 */
-  * {
+  *, *::before, *::after {
     -webkit-print-color-adjust: exact !important;
     color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
   
-  /* 背景色とグラデーションを印刷時も表示 */
-  .business-card-content *[class*="bg-"] {
+  /* HTML要素のstyle属性の背景色も印刷 */
+  [style*="background"] {
     -webkit-print-color-adjust: exact !important;
     color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
   
-  /* グラデーション背景を印刷時も表示 */
-  .business-card-content *[class*="gradient"] {
+  /* Tailwindの背景色クラス */
+  [class*="bg-"]:not([class*="bg-transparent"]) {
     -webkit-print-color-adjust: exact !important;
     color-adjust: exact !important;
     print-color-adjust: exact !important;
+  }
+  
+  /* Tailwindのグラデーションクラス */
+  [class*="from-"], [class*="to-"], [class*="via-"], [class*="gradient"] {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* business-card特有の設定 */
+  #business-card, #business-card * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* 画像とSVGの印刷設定 */
+  img, svg {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    display: block !important;
+    visibility: visible !important;
+  }
+  
+  /* SVGの色を保持 */
+  svg *, svg path, svg circle, svg rect {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* ページ設定で背景色を保持 */
+  @page {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    print-color-adjust: exact;
   }
 }

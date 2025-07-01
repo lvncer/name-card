@@ -136,6 +136,73 @@ name-card --help
 </div>
 ```
 
+### 🖼️ 画像ファイルの使用方法
+
+プロフィール写真、会社ロゴ、アイコンなどの画像ファイルを名刺に追加できます：
+
+#### 1. 画像ファイルの準備
+
+```bash
+# 画像ファイルを web/public/ ディレクトリに配置
+mkdir -p ~/.npm-global/lib/node_modules/@lvncer/name-card/web/public/images
+cp your-avatar.jpg ~/.npm-global/lib/node_modules/@lvncer/name-card/web/public/images/
+cp company-logo.png ~/.npm-global/lib/node_modules/@lvncer/name-card/web/public/images/
+```
+
+#### 2. HTML での画像参照
+
+```html
+<div class="bg-white rounded-lg shadow-lg p-4 h-full flex flex-col justify-between">
+  <div class="text-center">
+    <!-- プロフィール画像 -->
+    <img src="/images/avatar.jpg" alt="プロフィール" 
+         class="w-16 h-16 rounded-full mx-auto mb-2 object-cover">
+    <h1 class="text-lg font-bold text-gray-900">田中 太郎</h1>
+    <p class="text-sm text-gray-600">ソフトウェアエンジニア</p>
+  </div>
+  
+  <div class="flex-1 flex items-center justify-center">
+    <p class="text-xs text-gray-700 text-center">
+      高品質なソフトウェア開発
+    </p>
+  </div>
+  
+  <div class="flex items-center justify-between">
+    <div class="text-xs text-gray-600">
+      <p>tanaka@example.com</p>
+      <p>090-1234-5678</p>
+    </div>
+    <!-- 会社ロゴ -->
+    <img src="/images/company-logo.png" alt="会社ロゴ" 
+         class="h-8 opacity-70">
+  </div>
+</div>
+```
+
+#### 3. 既存SVGアイコンの活用
+
+パッケージに含まれているSVGアイコンも使用できます：
+
+```html
+<div class="flex items-center text-xs text-gray-600">
+  <img src="/globe.svg" alt="ウェブサイト" class="w-3 h-3 mr-2">
+  <span>https://example.com</span>
+</div>
+<div class="flex items-center text-xs text-gray-600">
+  <img src="/file.svg" alt="ポートフォリオ" class="w-3 h-3 mr-2">
+  <span>portfolio.pdf</span>
+</div>
+```
+
+#### 画像使用のベストプラクティス
+
+- **ファイル形式**: JPG（写真）、PNG（ロゴ・透明背景）、SVG（アイコン）推奨
+- **ファイルサイズ**: 100KB以下を推奨（印刷品質を保ちつつ軽量化）
+- **解像度**: 300dpi以上を推奨（印刷時の高品質を保証）
+- **パス指定**: 必ず絶対パス（`/images/filename.ext`）で指定
+- **altテキスト**: アクセシビリティのため必ず設定
+- **Tailwindクラス**: `object-cover`、`rounded-full`等でスタイリング
+
 ## 🖨️ 印刷・PDF 出力
 
 1. **Web アプリで「印刷・PDF出力」ボタンをクリック**
