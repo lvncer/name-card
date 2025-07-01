@@ -1,5 +1,6 @@
-# Next.js build files
-web/.next/
+# Next.js cache files (exclude only cache, not production build)
+web/.next/cache/
+web/.next/trace
 
 # Development files
 *.test.ts
