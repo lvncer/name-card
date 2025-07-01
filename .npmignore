@@ -1,38 +1,19 @@
+# Next.js build files
+web/.next/
+
 # Development files
-src/
-tests/
-docs/
+*.test.ts
+*.test.js
+web/src/test/
+
+# Node modules
+node_modules/
+web/node_modules/
+
+# Cache files
+.DS_Store
 *.log
 .env*
 
-# Build artifacts
-.next/
-web/.next/
-web/node_modules/
-node_modules/
-coverage/
-
-# Development tools
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Git
-.git/
-.gitignore
-
-# Testing
-playwright-report/
-test-results/
-
-# TypeScript
-tsconfig.json
-vitest.config.ts
-
 # Development dependencies
-nodemon.json
+web/bun.lockb
