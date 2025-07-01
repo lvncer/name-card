@@ -119,3 +119,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* 印刷時の背景色・グラデーション設定 */
+@media print {
+  /* 印刷時に背景色とグラデーションを強制表示 */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* 背景色とグラデーションを印刷時も表示 */
+  .business-card-content *[class*="bg-"] {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* グラデーション背景を印刷時も表示 */
+  .business-card-content *[class*="gradient"] {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

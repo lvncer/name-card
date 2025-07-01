@@ -152,16 +152,13 @@ export default function Home() {
       {/* 印刷専用スタイル */}
       <style jsx global>{`
         @media print {
-          * {
-            visibility: hidden;
+          /* 印刷時に不要な要素を隠す */
+          .no-print {
+            display: none !important;
           }
 
-          .print-only,
-          .print-only * {
-            visibility: visible;
-          }
-
-          .print-only {
+          /* 印刷時のレイアウト調整 */
+          .print-card {
             position: absolute;
             left: 0;
             top: 0;
@@ -174,29 +171,50 @@ export default function Home() {
             display: block !important;
           }
 
-          body {
-            margin: 0;
-            padding: 0;
-            background: white !important;
-          }
-
-          /* flexレイアウトを印刷時に無効化 */
-          .flex,
-          .flex-col,
-          .flex-row {
-            display: block !important;
-          }
-
+          /* 印刷時のページ設定 */
           @page {
             size: 91mm 55mm;
             margin: 0;
+          }
+
+          /* 印刷時のボディ設定 - 背景色を強制しない */
+          body {
+            margin: 0;
+            padding: 0;
+          }
+
+          /* 印刷時でもHTMLコンテンツのflexレイアウトを維持 */
+          .business-card-content .flex {
+            display: flex !important;
+          }
+          
+          .business-card-content .flex-col {
+            display: flex !important;
+            flex-direction: column !important;
+          }
+          
+          .business-card-content .flex-row {
+            display: flex !important;
+            flex-direction: row !important;
+          }
+          
+          .business-card-content .items-center {
+            align-items: center !important;
+          }
+          
+          .business-card-content .justify-between {
+            justify-content: space-between !important;
+          }
+          
+          .business-card-content .justify-center {
+            justify-content: center !important;
           }
         }
       `}</style>
 
       <div className="min-h-screen relative">
         {/* エクスポートボタン */}
-        <div className="absolute top-4 right-4 z-10">
+        <div className="absolute top-4 right-4 z-10 no-print">
           <Button onClick={handleExport} className="flex items-center gap-2">
             <Download size={16} />
             印刷・PDF出力
@@ -205,15 +223,12 @@ export default function Home() {
 
         {/* 名刺プレビュー */}
         <div className="flex items-center justify-center min-h-screen">
-          <div className="border-2 border-dashed border-gray-300 rounded-lg">
-            {/* 印刷専用の名刺（画面では非表示） */}
-            <div className="print-only hidden print:block">
-              <BusinessCard data={cardData} scale={1} />
-            </div>
-            {/* 画面表示用の名刺（印刷時は非表示） */}
-            <div className="print:hidden">
-              <BusinessCard data={cardData} scale={1} />
-            </div>
+          <div className="border-2 border-dashed border-gray-300 rounded-lg no-print">
+            <BusinessCard data={cardData} scale={1} />
+          </div>
+          {/* 印刷専用の名刺 */}
+          <div className="print-card hidden print:block">
+            <BusinessCard data={cardData} scale={1} />
           </div>
         </div>
       </div>

@@ -24,6 +24,7 @@ export const BusinessCard = memo<BusinessCardProps>(({ data, scale = 2 }) => {
 
     return (
       <div
+        className="business-card-content"
         style={cardStyle}
         id="business-card"
         dangerouslySetInnerHTML={{ __html: data.htmlContent }}
