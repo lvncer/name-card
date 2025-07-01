@@ -1,49 +1,64 @@
-<div class="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 rounded-lg shadow-xl p-4 text-white h-full flex flex-col justify-between">
-  <div class="flex items-center justify-between">
+<div class="bg-white rounded-lg shadow-lg p-4 text-gray-800 h-full flex flex-col justify-between">
+  <div class="flex items-center justify-between mb-3">
     <div>
-      <h1 class="text-lg font-bold mb-1">山田 花子</h1>
-      <p class="text-sm opacity-90">UI/UXデザイナー</p>
+      <h1 class="text-lg font-bold text-gray-900">山田 花子</h1>
+      <p class="text-sm text-gray-600">UI/UXデザイナー</p>
     </div>
-    <!-- ファイルアイコンを使用 -->
-    <img src="/file.svg" alt="デザイン" class="w-8 h-8 opacity-75">
+    <!-- プロフィール画像（同じディレクトリにavatar.jpgがある場合） -->
+    <!-- <img src="/auto-images/avatar.jpg" alt="プロフィール" class="w-12 h-12 rounded-full object-cover"> -->
   </div>
 
-  <div class="flex-1 flex items-center justify-center py-3">
+  <div class="flex-1 flex items-center justify-center py-2">
     <div class="text-center">
-      <!-- グローブアイコンを使用 -->
-      <img src="/globe.svg" alt="グローバル" class="w-6 h-6 mx-auto mb-2 opacity-80">
-      <p class="text-xs leading-relaxed">
-        世界中のユーザーに愛される<br>
-        <span class="font-semibold">デザインを創造</span>
+      <p class="text-xs text-gray-700 leading-relaxed">
+        ユーザー中心のデザインで<br>
+        <span class="font-semibold text-blue-600">価値のある体験</span>を創造
       </p>
     </div>
   </div>
 
-  <div class="space-y-2">
-    <div class="flex items-center text-xs">
-      <img src="/window.svg" alt="Web" class="w-3 h-3 mr-2 opacity-75">
-      <span>yamada-design.com</span>
-    </div>
-    <div class="flex items-center text-xs">
+  <div class="space-y-1.5">
+    <div class="flex items-center text-xs text-gray-600">
       <span class="w-3 h-3 mr-2">📧</span>
-      <span>hello@yamada-design.com</span>
+      <span>yamada@design.com</span>
     </div>
-    <div class="flex items-center text-xs">
+    <div class="flex items-center text-xs text-gray-600">
       <span class="w-3 h-3 mr-2">📱</span>
       <span>080-1234-5678</span>
     </div>
+    <div class="flex items-center text-xs text-gray-600">
+      <span class="w-3 h-3 mr-2">🌐</span>
+      <span>yamada-design.com</span>
+    </div>
+    <!-- 会社ロゴ（同じディレクトリにlogo.pngがある場合） -->
+    <!-- <div class="mt-2 text-center">
+      <img src="/auto-images/logo.png" alt="会社ロゴ" class="h-6 mx-auto opacity-70">
+    </div> -->
   </div>
 </div>
 
 <!-- 
-このテンプレートは既存のSVGファイルを使用しています:
-- /file.svg - デザインアイコン
-- /globe.svg - グローバルアイコン  
-- /window.svg - ウェブサイトアイコン
+🖼️ 画像ファイルの使用方法:
 
-画像を正しく表示するためのポイント:
-1. パスは絶対パス（/filename.svg）で指定
-2. altテキストを必ず指定
-3. Tailwind CSSでサイズと透明度を調整
-4. 印刷時も画像が表示されるようにCSS設定済み
+1. 画像ファイルをMarkdownファイルと同じディレクトリに配置
+   例: avatar.jpg, logo.png, icon.svg
+
+2. HTMLで /auto-images/ファイル名 で参照
+   例: <img src="/auto-images/avatar.jpg" alt="プロフィール">
+
+3. サポートされる画像形式:
+   - JPG/JPEG (写真)
+   - PNG (透明背景対応)
+   - SVG (ベクター画像)
+   - WebP, GIF, BMP, ICO
+
+4. 推奨設定:
+   - ファイルサイズ: 100KB以下
+   - 解像度: 300dpi以上（印刷品質）
+   - プロフィール画像: 正方形推奨
+
+5. 自動機能:
+   - 起動時に自動検出・コピー
+   - ファイル変更時の自動更新
+   - 終了時の自動クリーンアップ
 --> 

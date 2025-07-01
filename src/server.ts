@@ -1,13 +1,80 @@
 import { spawn } from "child_process";
 import { watch } from "chokidar";
 import open from "open";
-import { resolve } from "path";
+import { resolve, dirname, basename, extname } from "path";
 import { platform } from "os";
-import { existsSync } from "fs";
+import { existsSync, readdirSync, copyFileSync, unlinkSync, mkdirSync } from "fs";
 
 interface ServerOptions {
   port: number;
   openBrowser: boolean;
+}
+
+// 画像ファイルの拡張子
+const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.bmp', '.ico'];
+
+// 自動コピーした画像ファイルのリスト（クリーンアップ用）
+let copiedImages: string[] = [];
+
+// 画像ファイル自動検出・コピー機能
+function setupImageFiles(markdownFilePath: string, webDir: string): void {
+  const markdownDir = dirname(markdownFilePath);
+  const publicDir = resolve(webDir, 'public', 'auto-images');
+  
+  // auto-imagesディレクトリを作成
+  if (!existsSync(publicDir)) {
+    mkdirSync(publicDir, { recursive: true });
+  }
+
+  try {
+    // markdownファイルと同じディレクトリの画像ファイルを検出
+    const files = readdirSync(markdownDir);
+    const imageFiles = files.filter(file => 
+      IMAGE_EXTENSIONS.includes(extname(file).toLowerCase())
+    );
+
+    console.log(`Found ${imageFiles.length} image files in ${markdownDir}`);
+
+    // 画像ファイルをweb/public/auto-imagesにコピー
+    imageFiles.forEach(imageFile => {
+      const srcPath = resolve(markdownDir, imageFile);
+      const destPath = resolve(publicDir, imageFile);
+      
+      try {
+        copyFileSync(srcPath, destPath);
+        copiedImages.push(destPath);
+        console.log(`📸 Copied image: ${imageFile} -> /auto-images/${imageFile}`);
+      } catch (error) {
+        console.warn(`Failed to copy image ${imageFile}:`, error);
+      }
+    });
+
+    if (imageFiles.length > 0) {
+      console.log(`\n✨ 画像使用方法:`);
+      console.log(`HTMLで以下のように参照してください:`);
+      imageFiles.forEach(imageFile => {
+        console.log(`  <img src="/auto-images/${imageFile}" alt="画像説明">`);
+      });
+      console.log('');
+    }
+  } catch (error) {
+    console.warn('Failed to setup image files:', error);
+  }
+}
+
+// 自動コピーした画像のクリーンアップ
+function cleanupImages(): void {
+  console.log("Cleaning up auto-copied images...");
+  copiedImages.forEach(imagePath => {
+    try {
+      if (existsSync(imagePath)) {
+        unlinkSync(imagePath);
+      }
+    } catch (error) {
+      console.warn(`Failed to cleanup image ${imagePath}:`, error);
+    }
+  });
+  copiedImages = [];
 }
 
 export async function startServer(
@@ -16,9 +83,13 @@ export async function startServer(
 ): Promise<void> {
   const webDir = resolve(__dirname, "../web");
   const absoluteMarkdownPath = resolve(markdownFile);
+  const markdownDir = dirname(absoluteMarkdownPath);
 
   console.log(`Starting server for: ${markdownFile}`);
   console.log(`Web directory: ${webDir}`);
+
+  // 画像ファイルの自動検出・コピー
+  setupImageFiles(absoluteMarkdownPath, webDir);
 
   // webディレクトリの依存関係確認
   const nodeModulesPath = resolve(webDir, "node_modules");
@@ -89,9 +160,14 @@ export async function startServer(
   // 初回サーバー起動
   let nextProcess = await startPrebuiltServer();
 
-  // 効率的なファイル監視（デバウンス付き）
+  // 効率的なファイル監視（デバウンス付き）- Markdownファイルと画像ファイルを監視
   let reloadTimeout: NodeJS.Timeout | null = null;
-  const watcher = watch(absoluteMarkdownPath, {
+  const watchPatterns = [
+    absoluteMarkdownPath,
+    ...IMAGE_EXTENSIONS.map(ext => `${markdownDir}/*${ext}`)
+  ];
+  
+  const watcher = watch(watchPatterns, {
     ignored: /[\/\\]\./,
     persistent: true,
     ignoreInitial: true,
@@ -101,8 +177,19 @@ export async function startServer(
     }
   });
 
-  watcher.on("change", async () => {
-    console.log("Markdown file changed, preparing reload notification...");
+  watcher.on("change", async (changedPath) => {
+    const isImageFile = IMAGE_EXTENSIONS.some(ext => 
+      changedPath.toLowerCase().endsWith(ext)
+    );
+
+    if (isImageFile) {
+      console.log("Image file changed, updating auto-images...");
+      // 画像ファイルが変更された場合、再度セットアップ
+      cleanupImages();
+      setupImageFiles(absoluteMarkdownPath, webDir);
+    } else {
+      console.log("Markdown file changed, preparing reload notification...");
+    }
 
     // デバウンス（短時間での複数変更を防ぐ）
     if (reloadTimeout) {
@@ -151,6 +238,9 @@ export async function startServer(
     if (reloadTimeout) {
       clearTimeout(reloadTimeout);
     }
+
+    // 自動コピーした画像のクリーンアップ
+    cleanupImages();
 
     // Next.jsプロセス終了
     nextProcess.kill('SIGTERM');

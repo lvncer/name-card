@@ -175,12 +175,53 @@ export default function Home() {
           @page {
             size: 91mm 55mm;
             margin: 0;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+            print-color-adjust: exact;
           }
 
-          /* 印刷時のボディ設定 - 背景色を強制しない */
+          /* 背景色を強制的に印刷 */
+          *, *::before, *::after {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+
+          /* 印刷時のボディ設定 */
           body {
             margin: 0;
             padding: 0;
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+
+          /* HTMLコンテンツのすべての要素で背景色を強制 */
+          #business-card * {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+
+          /* Tailwindクラスの背景色を強制 */
+          [class*="bg-"] {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+
+          /* グラデーションを強制 */
+          [class*="gradient"], [class*="from-"], [class*="to-"], [class*="via-"] {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+
+          /* style属性の背景色も強制 */
+          [style*="background"] {
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
 
           /* 印刷時でもHTMLコンテンツのflexレイアウトを維持 */

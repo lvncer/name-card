@@ -80,11 +80,22 @@ npx @lvncer/name-card
 name-card my-card.md
 
 # サンプルテンプレートを使用
-name-card --template basic      # エンジニア向け
-name-card --template business   # ビジネス向け
-name-card --template designer   # デザイナー向け
-name-card --template freelancer # フリーランス向け
-name-card --template html-sample # HTML デザイン
+name-card --template basic        # エンジニア向け
+name-card --template business     # ビジネス向け
+name-card --template designer     # デザイナー向け
+name-card --template freelancer   # フリーランス向け
+name-card --template html-sample  # HTML デザイン
+name-card --template image-sample # 画像使用例
+name-card --template print-friendly # 印刷フレンドリー
+
+# テンプレート一覧表示
+name-card list-templates
+
+# ポート指定
+name-card my-card.md --port 4000
+
+# ブラウザ自動起動を無効化
+name-card my-card.md --no-open
 
 # ヘルプ表示
 name-card --help
@@ -138,16 +149,19 @@ name-card --help
 
 ### 🖼️ 画像ファイルの使用方法
 
-プロフィール写真、会社ロゴ、アイコンなどの画像ファイルを名刺に追加できます：
+プロフィール写真、会社ロゴ、アイコンなどの画像ファイルを名刺に簡単に追加できます：
 
-#### 1. 画像ファイルの準備
+#### 1. 簡単な画像配置方法 ✨
 
 ```bash
-# 画像ファイルを web/public/ ディレクトリに配置
-mkdir -p ~/.npm-global/lib/node_modules/@lvncer/name-card/web/public/images
-cp your-avatar.jpg ~/.npm-global/lib/node_modules/@lvncer/name-card/web/public/images/
-cp company-logo.png ~/.npm-global/lib/node_modules/@lvncer/name-card/web/public/images/
+# Markdownファイルと同じディレクトリに画像を配置するだけ！
+my-card.md
+avatar.jpg       # プロフィール写真
+company-logo.png # 会社ロゴ
+icon.svg        # アイコン
 ```
+
+**自動で検出・コピーされます！** 手動でのファイル配置は不要です。
 
 #### 2. HTML での画像参照
 
@@ -155,16 +169,10 @@ cp company-logo.png ~/.npm-global/lib/node_modules/@lvncer/name-card/web/public/
 <div class="bg-white rounded-lg shadow-lg p-4 h-full flex flex-col justify-between">
   <div class="text-center">
     <!-- プロフィール画像 -->
-    <img src="/images/avatar.jpg" alt="プロフィール" 
+    <img src="/auto-images/avatar.jpg" alt="プロフィール" 
          class="w-16 h-16 rounded-full mx-auto mb-2 object-cover">
     <h1 class="text-lg font-bold text-gray-900">田中 太郎</h1>
     <p class="text-sm text-gray-600">ソフトウェアエンジニア</p>
-  </div>
-  
-  <div class="flex-1 flex items-center justify-center">
-    <p class="text-xs text-gray-700 text-center">
-      高品質なソフトウェア開発
-    </p>
   </div>
   
   <div class="flex items-center justify-between">
@@ -173,35 +181,40 @@ cp company-logo.png ~/.npm-global/lib/node_modules/@lvncer/name-card/web/public/
       <p>090-1234-5678</p>
     </div>
     <!-- 会社ロゴ -->
-    <img src="/images/company-logo.png" alt="会社ロゴ" 
+    <img src="/auto-images/company-logo.png" alt="会社ロゴ" 
          class="h-8 opacity-70">
   </div>
 </div>
 ```
 
-#### 3. 既存SVGアイコンの活用
+#### 3. 画像使用テンプレート
 
-パッケージに含まれているSVGアイコンも使用できます：
-
-```html
-<div class="flex items-center text-xs text-gray-600">
-  <img src="/globe.svg" alt="ウェブサイト" class="w-3 h-3 mr-2">
-  <span>https://example.com</span>
-</div>
-<div class="flex items-center text-xs text-gray-600">
-  <img src="/file.svg" alt="ポートフォリオ" class="w-3 h-3 mr-2">
-  <span>portfolio.pdf</span>
-</div>
+```bash
+# 画像使用例のテンプレート
+name-card --template image-sample
 ```
+
+#### 🚀 自動機能
+
+- **自動検出**: 起動時にMarkdownファイルと同じディレクトリの画像を自動検出
+- **自動コピー**: 検出した画像を `/auto-images/` パスで使用可能に
+- **リアルタイム更新**: 画像ファイルの変更・追加を自動検知
+- **自動クリーンアップ**: サーバー終了時に一時ファイルを自動削除
+
+#### サポート画像形式
+
+- **JPG/JPEG**: 写真・プロフィール画像
+- **PNG**: 透明背景対応・ロゴ
+- **SVG**: ベクター画像・アイコン  
+- **WebP/GIF/BMP/ICO**: その他の画像形式
 
 #### 画像使用のベストプラクティス
 
-- **ファイル形式**: JPG（写真）、PNG（ロゴ・透明背景）、SVG（アイコン）推奨
 - **ファイルサイズ**: 100KB以下を推奨（印刷品質を保ちつつ軽量化）
 - **解像度**: 300dpi以上を推奨（印刷時の高品質を保証）
-- **パス指定**: 必ず絶対パス（`/images/filename.ext`）で指定
+- **プロフィール画像**: 正方形（1:1比率）推奨
+- **パス指定**: 必ず `/auto-images/ファイル名` で指定
 - **altテキスト**: アクセシビリティのため必ず設定
-- **Tailwindクラス**: `object-cover`、`rounded-full`等でスタイリング
 
 ## 🖨️ 印刷・PDF 出力
 
@@ -210,11 +223,31 @@ cp company-logo.png ~/.npm-global/lib/node_modules/@lvncer/name-card/web/public/
 3. **印刷設定で「PDF に保存」を選択**
 4. **ファイル名・保存場所を指定して完了**
 
+### 🎨 背景色・グラデーションを印刷する方法
+
+背景色やグラデーションを印刷に含めるには、ブラウザ設定の変更が必要です：
+
+#### Chrome の場合
+1. 印刷ダイアログで「詳細設定」をクリック
+2. 「背景のグラフィック」を **ON** にする
+3. 「印刷」または「PDF に保存」を実行
+
+#### Safari の場合  
+1. 印刷ダイアログで「詳細を表示」をクリック
+2. 「Safari」→「背景色と画像を印刷」を **チェック**
+3. 「印刷」または「PDF に保存」を実行
+
+#### Firefox の場合
+1. 印刷ダイアログで「設定」をクリック  
+2. 「背景色と画像を印刷」を **ON** にする
+3. 「印刷」または「PDF に保存」を実行
+
 ### 印刷のポイント
 
 - **実物サイズ**: 91mm × 55mm の標準的な名刺サイズ
 - **高品質**: ベクターベースで鮮明な印刷が可能
 - **カスタマイズ**: CSS で細かいデザイン調整が可能
+- **背景色対応**: 上記設定で背景色・グラデーションも印刷可能
 
 ## 🛠️ 開発
 
@@ -277,6 +310,8 @@ name-card/
 | `designer` | UI/UX デザイナー | デザイナー向け情報構成 |
 | `freelancer` | フリーランス | 個人事業主向け |
 | `html-sample` | 高度なデザイン | HTML + Tailwind CSS |
+| `image-sample` | 画像使用例 | プロフィール写真・ロゴ対応 |
+| `print-friendly` | 印刷重視 | 背景色不要・全ブラウザ対応 |
 
 ## 🔧 技術スタック
 
