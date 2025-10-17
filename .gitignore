@@ -45,6 +45,12 @@ next-env.d.ts
 /dist
 dist/
 
-.cursor/mcp.json
-.cursor/prompts
 bun.lockb
+
+# prompt files
+.vscode/
+.cursor/
+.windsuf/
+.claude/
+.mcp.json
+AGENTS.md
